@@ -76,6 +76,12 @@ func (b bookService) Update(ctx context.Context, book models.UpdateBook) (models
 	return updatedBook, nil
 }
 
+func (b bookService) Delete(ctx context.Context, key string) error {
+	err := b.storage.Book().Delete(ctx, key)
+
+	return err
+}
+
 func (b bookService) UpdatePageNumber(ctx context.Context, pNumber models.UpdateBookPageNumber) (models.Book, error) {
 	id, err := b.storage.Book().UpdatePageNumber(ctx, pNumber)
 	if err != nil {
@@ -92,8 +98,3 @@ func (b bookService) UpdatePageNumber(ctx context.Context, pNumber models.Update
 	return updatedPageNumber, nil
 }
 
-func (b bookService) Delete(ctx context.Context, key string) error {
-	err := b.storage.Book().Delete(ctx, key)
-
-	return err
-}
