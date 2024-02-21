@@ -145,6 +145,29 @@ func (h Handler) UpdateBook(c *gin.Context) {
 	handleResponse(c, h.log, "", http.StatusOK, book)
 }
 
+// DeleteBook godoc
+// @Router       /book/{id} [DELETE]
+// @Summary      Delete book
+// @Description  delete book
+// @Tags         book
+// @Accept       json
+// @Produce      json
+// @Param 		 id path string true "book_id"
+// @Success      200  {object}  models.Response
+// @Failure      400  {object}  models.Response
+// @Failure      404  {object}  models.Response
+// @Failure      500  {object}  models.Response
+func (h Handler) DeleteBook(c *gin.Context) {
+	uid := c.Param("id")
+
+	if err := h.services.Book().Delete(context.Background(), uid); err != nil {
+		handleResponse(c, h.log, "error is while deleting basket", http.StatusInternalServerError, err)
+		return
+	}
+
+	handleResponse(c, h.log, "", http.StatusOK, nil)
+}
+
 // UpdatePageNumber godoc
 // @Router       /book/{id} [PATCH]
 // @Summary      Update book page number
@@ -183,25 +206,3 @@ func (h Handler) UpdatePageNumber(c *gin.Context) {
 	handleResponse(c, h.log, "", http.StatusOK, book)
 }
 
-// DeleteBook godoc
-// @Router       /book/{id} [DELETE]
-// @Summary      Delete book
-// @Description  delete book
-// @Tags         book
-// @Accept       json
-// @Produce      json
-// @Param 		 id path string true "book_id"
-// @Success      200  {object}  models.Response
-// @Failure      400  {object}  models.Response
-// @Failure      404  {object}  models.Response
-// @Failure      500  {object}  models.Response
-func (h Handler) DeleteBook(c *gin.Context) {
-	uid := c.Param("id")
-
-	if err := h.services.Book().Delete(context.Background(), uid); err != nil {
-		handleResponse(c, h.log, "error is while deleting basket", http.StatusInternalServerError, err)
-		return
-	}
-
-	handleResponse(c, h.log, "", http.StatusOK, nil)
-}
